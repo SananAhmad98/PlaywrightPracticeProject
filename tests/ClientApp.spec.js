@@ -1,6 +1,6 @@
 const {test,expect} = require('@playwright/test');
 
-test.only("Rahul shetty client URL Test", async ({page}) => {
+test("Rahul shetty client URL Test", async ({page}) => {
 
     const userName = page.locator('#userEmail');
     const userPass = page.locator('#userPassword');

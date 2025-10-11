@@ -17,7 +17,11 @@ const config = ({
   use: {
 
     browserName: 'chromium', //chromium, firefox, and webkit
-    headless : false
+    headless : false,
+    //this will take screenshot for all the actions throughout the script.
+    screenshot : 'retain-on-failure', //it can be off, on, retain-on-failure
+    //this will trace each action and generate logs for further debugging
+    trace: 'retain-on-failure' //it can be off, on, retain-on-failure
 
   },
 

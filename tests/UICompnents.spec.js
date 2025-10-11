@@ -38,7 +38,7 @@ test("Static dropdown Test", async ({page,browser}) =>{
     await expect(freeAccessLink).toHaveAttribute("class","blinkingText");
 });
 
-test.only("Child Windows and Tabs test", async({browser}) => {
+test("Child Windows and Tabs test", async({browser}) => {
 
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -62,11 +62,16 @@ test.only("Child Windows and Tabs test", async({browser}) => {
 
     const mainTextRedParaArray = textOfRedPara.split("@");
     const domainName = mainTextRedParaArray[1].split(" ")[0];
-    console.log(domainName);
+    //console.log(domainName);
 
     await userName.fill(domainName);
-    await page.pause();
-    console.log (await userName.textContent());
+    //await page.pause();
+
+    //textContent() only picks the default value when the DOM is loaded. Thats why it will not print anything.
+    //console.log (await userName.textContent());
+
+    //In order to pick the value put by user programetically, we need to use inputvalue() method.
+    console.log(await userName.inputValue())
 
 });
 

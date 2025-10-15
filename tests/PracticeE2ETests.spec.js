@@ -6,6 +6,7 @@ const context = await browser.newContext();
 const page = await context.newPage();
 
 //login page locators
+const email = "sananahmad98@gmail.com";
 const userName = page.locator('#userEmail');
 const userPass = page.locator('#userPassword');
 const loginBtn = page.locator('#login');
@@ -21,16 +22,22 @@ const actualProductName = page.locator("h3:has-text('ADIDAS ORIGINAL')"); // new
 const checkOutBtn = page.locator("//button[contains(text(),'Checkout')]");
 
 //Order page locators
-cvvField = page.locator("//div[@class='payment__cc']//div[2]//input[1]");
-nameOnCardField = page.locator("//div[@class='payment__info']//div[3]//div[1]//input[1]");
-applyCouponField = page.locator("//input[@name='coupon']");
-applyCouponBtn = page.locator("//button[contains(text(),'Apply Coupon')]");
-couponApplied = page.locator("//p[contains(text(),'* Coupon Applied')]");
+const cvvField = page.locator("//div[@class='payment__cc']//div[2]//input[1]");
+const nameOnCardField = page.locator("//div[@class='payment__info']//div[3]//div[1]//input[1]");
+const applyCouponField = page.locator("//input[@name='coupon']");
+const applyCouponBtn = page.locator("//button[contains(text(),'Apply Coupon')]");
+const couponApplied = page.locator("//p[contains(text(),'* Coupon Applied')]");
+const countryInput = page.locator("[placeholder*='Country']");
+const dropdown = page.locator(".ta-results");
+const placeOrderBtn = page.locator("//a[text() = 'Place Order ']");
+const loginEmail = page.locator(".user__name  [type='text']").first();
 
+//thanks page locators
+const thanksMsg = page.locator(".hero-primary");
 
 //login page actions
 await page.goto("https://rahulshettyacademy.com/client/");
-await userName.fill("sananahmad98@gmail.com");
+await userName.fill(email);
 await userPass.fill("webdir123R");
 await loginBtn.click();
 
@@ -52,6 +59,30 @@ await nameOnCardField.fill("SANAN AHMAD");
 await applyCouponField.fill("rahulshettyacademy");
 await applyCouponBtn.click();
 await page.locator("p[class='mt-1 ng-star-inserted']").waitFor();
-//await expect(couponApplied.textContent().contains("coupon applied"))
+expect(couponApplied).toHaveText("* Coupon Applied");
+
+//handling dynamic dropdown
+await countryInput.pressSequentially("Ind",{delay:100}) //it will press each key unlike fill() and will have a delay of 150 ms between each key.
+await dropdown.waitFor();
+const optionsCount = await dropdown.locator("button").count();
+for(let i=0; i < optionsCount; ++i){
+
+    const text =  await dropdown.locator("button").nth(i).textContent()
+    if(text === " India"){
+
+        await dropdown.locator("button").nth(i).click();
+        break;
+
+    }
+}
+
+expect(loginEmail).toHaveText(email)
+await placeOrderBtn.click();
+
+//Thanks Page actions
+expect(thanksMsg).toHaveText(" Thankyou for the order. ");
+const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+const orderIDActualValue = orderID.split(" ");
+console.log(orderIDActualValue[2]);
 
 });

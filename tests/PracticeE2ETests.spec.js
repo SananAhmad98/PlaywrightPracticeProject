@@ -34,6 +34,14 @@ const loginEmail = page.locator(".user__name  [type='text']").first();
 
 //thanks page locators
 const thanksMsg = page.locator(".hero-primary");
+const orderHistoryPageLink = page.locator("label[routerlink*='myorders']");
+
+//order history page locators
+const orderTable = page.locator("table.table");
+const orderRows = page.locator("tbody tr");
+
+//order details page locators
+const orderDetailsThanksMsg = page.locator("p.tagline");
 
 //login page actions
 await page.goto("https://rahulshettyacademy.com/client/");
@@ -82,7 +90,25 @@ await placeOrderBtn.click();
 //Thanks Page actions
 expect(thanksMsg).toHaveText(" Thankyou for the order. ");
 const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
-const orderIDActualValue = orderID.split(" ");
-console.log(orderIDActualValue[2]);
+await orderHistoryPageLink.click();
+
+//order history page actions
+await orderTable.waitFor();
+const orderCount = await orderRows.count();
+for(let order = 0; order < orderCount; ++order){
+
+    const orderIDText = await orderRows.nth(order).locator("th").textContent();
+    console.log(orderIDText);
+    if(orderID.includes(orderIDText)){
+
+        await orderRows.nth(order).locator("button.btn-primary").click();
+        break;
+
+    }
+}
+
+//order details page actions
+expect (orderDetailsThanksMsg).toHaveText("Thank you for Shopping With Us");
+await page.pause();
 
 });

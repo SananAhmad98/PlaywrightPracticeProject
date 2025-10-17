@@ -34,7 +34,7 @@ const loginEmail = page.locator(".user__name  [type='text']").first();
 
 //thanks page locators
 const thanksMsg = page.locator(".hero-primary");
-const orderHistoryPageLink = page.locator("label[routerlink*='myorders']");
+const orderHistoryPageLink = page.locator("button[routerlink*='myorders']");
 
 //order history page locators
 const orderTable = page.locator("table.table");

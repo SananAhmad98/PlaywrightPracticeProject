@@ -1,36 +1,16 @@
 const { test, expect, request } = require('@playwright/test');
+const { APIUtils } = require('./utils/APIUtils');
 
 const loginPayload = { userEmail: "sananahmad98@gmail.com", userPassword: "webdir123R" };
 const orderPayload = { orders: [{ country: "Pakistan", productOrderedId: "68a961959320a140fe1ca57e" }] };
-let orderID;
-let actualToken;
+let response;
 
 //It will run before all the test methods in this spec
-test.beforeAll("@Login and create Order API test methods", async () => {
+test.beforeAll("Login and create Order API test methods", async () => {
 
     const apiContext = await request.newContext();
-    const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", { data: loginPayload });
-    await expect(loginResponse.ok()).toBeTruthy();
-
-    const loginResponseJSON = await loginResponse.json();
-    actualToken = loginResponseJSON.token; //It is being utilized in actual E2E test
-
-    //Create Order API
-    const orderResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order",
-
-        {
-            data: orderPayload,
-            headers: {
-
-                "Authorization": actualToken,
-                "Content-Type": "application/json"
-            }
-
-        });
-
-    const orderResponseJSON = await orderResponse.json();
-    orderID = orderResponseJSON.orders[0];
-    console.log(orderID);
+    const apiUtils = new APIUtils(apiContext, loginPayload);
+    response = await apiUtils.createOrderAPI(orderPayload);
 
 });
 
@@ -44,7 +24,7 @@ test("E2E Testcase to select Adidas original dynamically using API & UI", async 
 
         window.localStorage.setItem("token", tokenValue);
 
-    }, actualToken);
+    }, response.token);
 
     //Hitting main URL but login page will be skipped and further execution will be started
     await page.goto("https://rahulshettyacademy.com/client/");
@@ -69,7 +49,7 @@ test("E2E Testcase to select Adidas original dynamically using API & UI", async 
 
         const orderIDText = await orderRows.nth(order).locator("th").textContent();
         console.log(orderIDText);
-        if (orderID.includes(orderIDText)) {
+        if (response.orderID.includes(orderIDText)) {
 
             await orderRows.nth(order).locator("button.btn-primary").click();
             break;

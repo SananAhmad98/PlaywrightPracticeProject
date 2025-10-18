@@ -1,0 +1,129 @@
+const {test,expect} = require('@playwright/test');
+
+const email = "sananahmad98@gmail.com";
+let parentContext;
+
+
+test.beforeAll(("API Web Part-2"),async ({browser}) =>{
+
+const newContext = await browser.newContext();
+const page = await newContext.newPage();
+
+const userName = page.locator('#userEmail');
+const userPass = page.locator('#userPassword');
+const loginBtn = page.locator('input#login');
+
+//login page actions
+await page.goto("https://rahulshettyacademy.com/client/");
+await userName.fill(email);
+await userPass.fill("webdir123R");
+await loginBtn.click();
+//Storing all the values from session storage, local storage, and cookies of a browser in state.json file at once.
+await newContext.storageState({path:'state.json'});
+parentContext = await browser.newContext({storageState:'state.json'});
+
+});
+
+
+test("API Web Testcase to select Adidas original dynamically", async() => {
+
+const page = await parentContext.newPage(); //It has all the information already stored such as cookies, token, and etc.
+
+//Dashboard/products page locators
+const expectedProductName = page.locator("//div[@class='card-body']//h5/b[contains(text(),'ADIDAS ORIGINAL')]").textContent();
+const expectedProductPrice = page.locator("//b[contains(text(),'ADIDAS ORIGINAL')]//..//..//div//div").textContent();
+const productAddToCartBtn = page.locator("//b[contains(text(),'ADIDAS ORIGINAL')]//..//..//button[2]");
+const cartLink = page.locator("button[routerlink *= 'cart']");
+
+//Cart page locators
+const actualProductName = page.locator("h3:has-text('ADIDAS ORIGINAL')"); // new playwright feature
+const checkOutBtn = page.locator("//button[contains(text(),'Checkout')]");
+
+//Order page locators
+const cvvField = page.locator("//div[@class='payment__cc']//div[2]//input[1]");
+const nameOnCardField = page.locator("//div[@class='payment__info']//div[3]//div[1]//input[1]");
+const applyCouponField = page.locator("//input[@name='coupon']");
+const applyCouponBtn = page.locator("//button[contains(text(),'Apply Coupon')]");
+const couponApplied = page.locator("//p[contains(text(),'* Coupon Applied')]");
+const countryInput = page.locator("[placeholder*='Country']");
+const dropdown = page.locator(".ta-results");
+const placeOrderBtn = page.locator("//a[text() = 'Place Order ']");
+const loginEmail = page.locator(".user__name  [type='text']").first();
+
+//thanks page locators
+const thanksMsg = page.locator(".hero-primary");
+const orderHistoryPageLink = page.locator("button[routerlink*='myorders']");
+
+//order history page locators
+const orderTable = page.locator("table.table");
+const orderRows = page.locator("tbody tr");
+
+//order details page locators
+const orderDetailsThanksMsg = page.locator("p.tagline");
+
+//Go to page now
+await page.goto("https://rahulshettyacademy.com/client/");
+
+//Dashboard/products page actions
+await productAddToCartBtn.click();
+//await page.pause();
+await cartLink.click();
+
+//Cart page actions
+//we are waiting here because there is no automatic waiting mechanism for isVisible().
+await page.locator("div li").first().waitFor(); 
+const isProductAvailableInCart = await actualProductName.isVisible();
+expect(isProductAvailableInCart).toBeTruthy();
+await checkOutBtn.click();
+
+//Order page actions
+await cvvField.fill("123");
+await nameOnCardField.fill("SANAN AHMAD");
+await applyCouponField.fill("rahulshettyacademy");
+await applyCouponBtn.click();
+await page.locator("p[class='mt-1 ng-star-inserted']").waitFor();
+expect(couponApplied).toHaveText("* Coupon Applied");
+
+//handling dynamic dropdown
+await countryInput.pressSequentially("Ind",{delay:100}) //it will press each key unlike fill() and will have a delay of 150 ms between each key.
+await dropdown.waitFor();
+const optionsCount = await dropdown.locator("button").count();
+for(let i=0; i < optionsCount; ++i){
+
+    const text =  await dropdown.locator("button").nth(i).textContent()
+    if(text === " India"){
+
+        await dropdown.locator("button").nth(i).click();
+        break;
+
+    }
+}
+
+expect(loginEmail).toHaveText(email)
+await placeOrderBtn.click();
+
+//Thanks Page actions
+expect(thanksMsg).toHaveText(" Thankyou for the order. ");
+const orderID = await page.locator(".em-spacer-1 .ng-star-inserted").textContent();
+await orderHistoryPageLink.click();
+
+//order history page actions
+await orderTable.waitFor();
+const orderCount = await orderRows.count();
+for(let order = 0; order < orderCount; ++order){
+
+    const orderIDText = await orderRows.nth(order).locator("th").textContent();
+    console.log(orderIDText);
+    if(orderID.includes(orderIDText)){
+
+        await orderRows.nth(order).locator("button.btn-primary").click();
+        break;
+
+    }
+}
+
+//order details page actions
+expect (orderDetailsThanksMsg).toHaveText("Thank you for Shopping With Us");
+await page.pause();
+
+});

@@ -1,8 +1,9 @@
 class DashboardPage {
 
-    constructor(productName) {
+    constructor(productName,page) {
 
-        this.productAddToCartBtn = page.locator("//b[contains(text()," + productName + ")]//..//..//button[2]");
+        this.page = page;
+        this.productAddToCartBtn = page.locator("//b[contains(text(), '"+ productName + "')]//..//..//button[2]");
         this.cartLink = page.locator("button[routerlink *= 'cart']");
 
     }

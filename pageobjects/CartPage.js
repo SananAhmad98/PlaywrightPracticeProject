@@ -9,10 +9,10 @@ constructor(productName)
  this.checkOutBtn = page.locator("//button[contains(text(),'Checkout')]");
 }
 
-async getcartItems(){
+async waitForCartItems(){
 
 
-    return await this.cartItems;
+    await this.cartItems.first().waitFor();
 
 }
 

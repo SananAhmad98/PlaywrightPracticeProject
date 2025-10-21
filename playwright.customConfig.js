@@ -9,7 +9,7 @@ const config = ({
   testDir: './tests',
   timeout: 30 * 1000, //This timeout will be utilized for normal execution of statements. Default timeout is 30 seconds.
   retries: 1, //This will retry the execution of test case if it is failed on the first attempt.
-  workers: 3, //This option will be utilized to run test files in a parallel mode.
+  workers: 5, //This option will be utilized to run test files in a parallel mode.
   expect: { //This expect timeout will be applied on the assertions
 
     timeout: 5000,
@@ -39,7 +39,7 @@ const config = ({
       use: {
 
         browserName: 'chromium', //chromium, firefox, and webkit
-        headless: false,
+        headless: true,
         //this will take screenshot for all the actions throughout the script.
         screenshot: 'off', //it can be off, on, retain-on-failure
         //this will trace each action and generate logs for further debugging

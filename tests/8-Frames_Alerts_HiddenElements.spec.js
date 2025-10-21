@@ -25,7 +25,7 @@ await page.locator("#mousehover").hover();
 
 });
 
-test.only("Frames/iFrames handling", async({page,browser}) => {
+test("Frames/iFrames handling", async({page,browser}) => {
 
 await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
 

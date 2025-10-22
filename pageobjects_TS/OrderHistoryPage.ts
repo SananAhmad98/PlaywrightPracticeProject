@@ -20,7 +20,7 @@ export class OrderHistoryPage {
         const orderCount:number = await this.orderRows.count();
         for (let order = 0; order < orderCount; ++order) {
 
-            const orderIDText:any = await this.orderRows.nth(order).locator("th").textContent();
+            let orderIDText:any = await this.orderRows.nth(order).locator("th").textContent();
             if (orderID.includes(orderIDText)) {
 
                 await this.orderRows.nth(order).locator("button.btn-primary").click();

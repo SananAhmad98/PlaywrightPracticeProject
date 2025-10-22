@@ -44,7 +44,7 @@ await this.dropdown.waitFor();
 const optionsCount:number = await this.dropdown.locator("button").count();
 for(let i=0; i < optionsCount; ++i){
 
-    const text:any =  await this.dropdown.locator("button").nth(i).textContent()
+    let text:any =  await this.dropdown.locator("button").nth(i).textContent()
     if(text === " India"){
 
         await this.dropdown.locator("button").nth(i).click();

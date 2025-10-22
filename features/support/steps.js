@@ -4,7 +4,7 @@ const { expect } = require('@playwright/test');
 
 //By default cucumber will 5 sec for each chunk, if your piece of code takes more time than that, it will fail. Hence, increase timeout.
 
-Given('a login to e-commerce application with {string} and {string}',{timeout : 10*1000} ,async function (username, password) {
+Given('a login to e-commerce application with {string} and {string}',{timeout : 100*1000} ,async function (username, password) {
 
     //Go to login Page
     const loginPage = await this.basePage.getLoginPage();

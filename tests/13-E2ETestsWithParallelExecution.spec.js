@@ -59,7 +59,7 @@ await expect (await orderDetailsPage.validateOrderDetails()).toHaveText("Thank y
 
 });
 
-customTest("E2E Testcase to apply coupon", async({browser,testDataForLoginPage,testDataForDashboardPage,testDataForOrderPage}) => {
+customTest("@Web E2E Testcase to apply coupon", async({browser,testDataForLoginPage,testDataForDashboardPage,testDataForOrderPage}) => {
 
 const context = await browser.newContext();
 const page = await context.newPage();

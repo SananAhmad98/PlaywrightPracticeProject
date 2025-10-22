@@ -2,7 +2,7 @@ const {test,expect} = require('@playwright/test');
 const {BasePage} = require("../pageobjects/BasePage");
 const {customTest} = require("../utils/CustomFixtureForE2ETestWithCF");
 
-customTest("E2E Testcase to dynamically select products", async({browser,testDataForLoginPage,testDataForDashboardPage,testDataForOrderPage}) => {
+customTest("@Web E2E Testcase to dynamically select products", async({browser,testDataForLoginPage,testDataForDashboardPage,testDataForOrderPage}) => {
 
 const context = await browser.newContext();
 const page = await context.newPage();

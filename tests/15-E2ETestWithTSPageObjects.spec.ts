@@ -1,5 +1,5 @@
 import {test,expect} from '@playwright/test';
-const {BasePage} = require("../pageobjects/BasePage");
+const {BasePage} = require("../pageobjects_TS/BasePage");
 
 //Data coming from external json files
 const loginPageDataSet = JSON.parse(JSON.stringify(require("../testdata/loginPageTestData.json")));

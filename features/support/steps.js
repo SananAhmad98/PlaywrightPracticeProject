@@ -69,3 +69,22 @@ Then('Verify error message is diplayed', async function () {
     await expect(this.page.locator('[style*=none]')).toContainText("Incorrect");
 
 });
+
+Given('a login to e-commerce application-3 with {string} and {string}', { timeout: 100 * 1000 }, async function (username, password) {
+
+    const userName = this.page.locator('#username');
+    const pswd = this.page.locator("[type='password']");
+    const signInBtn = this.page.locator('#signInBtn');
+
+    await this.page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await userName.fill(username);
+    await pswd.fill(password);
+    await signInBtn.click();
+});
+
+Then('Verify all crendentials are incorrect', async function () {
+    
+    console.log(await this.page.locator('[style*=none]').textContent());
+    await expect(this.page.locator('[style*=none]')).toContainText("Incorrect");
+
+});

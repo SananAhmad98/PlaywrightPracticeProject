@@ -2,7 +2,14 @@
   "name": "playwrightpracticeproject",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+
+    "MochaWeb": "npx playwright test --grep @Web",
+    "MochaWithSafari": "npx playwright test tests/12-E2ETestWithCustomFixtures.spec.js --config playwright.customConfig.js --project=Safari execution config",
+    "CucumberRegression" : "npx cucumber-js --tags '@Regression and @Smoke' --format html:cucumer-report.html --retry 1 --exit",
+    "MochaWebRetries": "npx playwright test --grep @Web --retries 1 --workers 3"
+
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

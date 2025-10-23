@@ -14,13 +14,16 @@ Before(async function() {
 
 });
 
-After(function () {
-  // Assuming this.driver is a selenium webdriver
- console.log("Hey, Im last")
+//{tags: "@Regression and @Smoke"} or can also be used. However, it will run with @Regression scenario only right now.
+After({tags:"@Regression"},function () {
+ 
+
+ console.log("Hey, Im the AFTER HOOK here")
+
 });
 
-
-AfterStep(async function({result}) {
+//It will run with any scenario having either @regression or @smoke tag
+AfterStep({tags: "@Regression or @Smoke"},async function({result}) {
 
 if(result.status === Status.FAILED){
 

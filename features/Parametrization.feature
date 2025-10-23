@@ -7,6 +7,6 @@ Feature: Parametrization Scenarios
     Then Verify all crendentials are incorrect
 
     Examples:
-        | username                | password     | 
-        | sananahmad09@gamil.com  | webdir123RR  |
-        | sananahmad10@gmail.com  | webdir123RRR |
+        | username                |password| 
+        | sananahmad09@gamil.com  |webdir123RR|
+        | sananahmad98@gmail.com  |webdir123R|

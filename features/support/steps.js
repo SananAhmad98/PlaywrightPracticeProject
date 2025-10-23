@@ -4,7 +4,7 @@ const { expect } = require('@playwright/test');
 
 //By default cucumber will 5 sec for each chunk, if your piece of code takes more time than that, it will fail. Hence, increase timeout.
 
-Given('a login to e-commerce application with {string} and {string}',{timeout : 100*1000} ,async function (username, password) {
+Given('a login to e-commerce application with {string} and {string}', { timeout: 100 * 1000 }, async function (username, password) {
 
     //Go to login Page
     const loginPage = await this.basePage.getLoginPage();
@@ -28,7 +28,7 @@ Then('Verify product is displayed in the cart', async function () {
     await cartPage.clickCheckOutButton();
 });
 
-When('Enter valid details such as {string}, {string}, {string}, {string}, and then place the Order', async function (cvv,nameOnCard,couponValue,countryName) {
+When('Enter valid details such as {string}, {string}, {string}, {string}, and then place the Order', async function (cvv, nameOnCard, couponValue, countryName) {
     // Write code here that turns the phrase above into concrete actions
     this.orderPage = await this.basePage.getOrderPage();
     await this.orderPage.provideCardInformation(cvv, nameOnCard);
@@ -49,4 +49,23 @@ Then('Verify if order is present in Order History', async function () {
     //order history page actions
     const orderHistoryPage = await this.basePage.getOrderHistoryPage();
     await orderHistoryPage.validateOrderInOrderHistory(orderID);
+});
+
+Given('a login to e-commerce application-2 with {string} and {string}', { timeout: 100 * 1000 }, async function (username, password) {
+
+    const userName = this.page.locator('#username');
+    const pswd = this.page.locator("[type='password']");
+    const signInBtn = this.page.locator('#signInBtn');
+
+    await this.page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    await userName.fill(username);
+    await pswd.fill(password);
+    await signInBtn.click();
+});
+
+Then('Verify error message is diplayed', async function () {
+    
+    console.log(await this.page.locator('[style*=none]').textContent());
+    await expect(this.page.locator('[style*=none]')).toContainText("Incorrect");
+
 });

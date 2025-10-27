@@ -1,0 +1,63 @@
+1) npm init playwright => execute this command in  your root folder directory to start playwright project.
+
+2) npx playwright test => This command will invoke your test cases which are configured in playwright.config.js file with headless mode.
+
+3) npx playwright test --headed => for browser mode.
+
+4) npx playwright test tests/ClientApp.spec.js => To run specific class tests
+
+5) npx playwright test tests/UICompnents.spec.js --debug => To start the test execution in debug mode using playwright inspector.
+
+6) npx playwright codegen http://google.com => This will help us to record and generate script using playwright
+
+7) Copy the path of "index.html" and place it browser to see enabled screenshots, traces, and logs for each test case or failed ones.
+
+8) hit "https://trace.playwright.dev/" URL on browser to upload downloaded trace zip folder.
+
+9) npx playwright test --ui => It will open all your tests in a playwright UI test runner. You may run and debug your tests using UI.
+
+10) Ctrl + Shift + P and then Debug npm Script to start debugging. However, first put test parameter under scripts of package.json like:
+
+"test" : "npx playwright test tests/10-WebAPIPart2.spec.js --headed"
+
+11) npx playwright test tests/12-E2ETestWithCustomFixtures.spec.js --config playwright.customConfig.js => For choosing custom config file.
+
+12) npx playwright test tests/12-E2ETestWithCustomFixtures.spec.js --config playwright.customConfig.js --project="Safari execution config"
+
+=> This will run only the project name with "Safari execution config"
+
+13) npx playwright test tests/12-E2ETestWithCustomFixtures.spec.js --config playwright.customConfig.js --project
+
+=> This will run the test with all configurations one by one.
+
+14) By default, test files under a tests folder will be executed in parallel manner. However, tests under a single test file will be executed in sequential manner.
+
+15) npx playwright --grep "@API" => This will consider all the test cases which have a @API in their test names. [Tagging/grouping of test cases in playwright]. @Web is not a keyword.
+
+16) npx playwright --grep "@Web" => This will consider all the test cases which have a @Web in their test names. [Tagging/grouping of test cases in playwright]. @API is not a keyword.
+
+17) npm install -g allure-commandline --save-dev
+
+17) npx playwright test --grep "@Web" --reporter=line,allure-playwright => After this allure-results folder will be generated.
+
+18) allure generate ./allure-results --clean => Clean allure-report folder will be generated. 
+
+19) allure open ./allure-report => This will open the allure reports webserver.
+
+20) npx cucumber-js => Provide step definitions for the feature file features folder.
+
+21) npx cucumber-js --exit => to tell cucumber to come out of the execution mode once all steps are executed.
+
+22) npx cucumber-js feature features/Ecommerce.feature --exit => To execute specific feature file.
+
+23) npx cucumber-js --tags "@Regression" --exit
+
+24) npx cucumber-js --tags "@Regression and @Smoke" --exit
+
+25) Cucumber can not run two feature files in parallel. However, multiple scenarios of single file can be executed at once:
+
+npx cucumber-js feature features/ecommerce.feature --parallel 2 --exit => 2 scenarios will be executed in parallel.
+
+26) npx cucumber-js feature features/ecommerce.feature --parallel 2 --format html:cucumer-report.html --exit =>To generate html report.
+
+27) npx cucumber-js --tags '@Regression and @Smoke' --format html:cucumer-report.html --retry 1 --exit => To retry failed tests once again

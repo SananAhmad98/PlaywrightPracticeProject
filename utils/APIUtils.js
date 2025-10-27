@@ -46,6 +46,58 @@ class APIUtils {
 
     }
 
+    // New: fetch orders (or a specific order if orderID provided)
+    async getOrderAPI(orderID) {
+
+        let response = {};
+        response.token = await this.getToken();
+
+        const ordersResponse = await this.apiContext.get("https://rahulshettyacademy.com/api/ecom/order/get-orders",
+            {
+                headers: {
+                    "Authorization": response.token,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        await expect(ordersResponse.ok()).toBeTruthy();
+
+        const ordersJSON = await ordersResponse.json();
+        // if caller provided an orderID, try to return that order; otherwise return full payload
+        if (orderID) {
+            const found = (ordersJSON.orders || []).find(o => (o._id || o).toString().includes(orderID.toString()));
+            response.order = found ?? null;
+        } else {
+            response.orders = ordersJSON.orders ?? ordersJSON;
+        }
+
+        return response;
+    }
+
+    // New: delete an order by id
+    async deleteOrderAPI(orderID) {
+
+        let response = {};
+        response.token = await this.getToken();
+
+        // Delete Order API - using a RESTful DELETE endpoint
+        const deleteResponse = await this.apiContext.delete(`https://rahulshettyacademy.com/api/ecom/order/delete-order/${orderID}`,
+            {
+                headers: {
+                    "Authorization": response.token,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        await expect(deleteResponse.ok()).toBeTruthy();
+
+        const deleteJSON = await deleteResponse.json();
+        response.result = deleteJSON;
+        return response;
+    }
+
 }
 
 module.exports = {APIUtils};
